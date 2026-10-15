@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مهامي اليومية | Daily Tasks</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #f8efff, #eee5ff);
+      color: #382447;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: white;
+      width: 100%;
+      max-width: 500px;
+      padding: 30px 22px;
+      border-radius: 22px;
+      box-shadow: 0 10px 35px #75528a20;
+    }
+
+    h1 {
+      text-align: center;
+      color: #8e5a82;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #887b91;
+      margin-bottom: 25px;
+    }
+
+    .input-area {
+      display: flex;
+      gap: 8px;
+    }
+
+    input {
+      flex: 1;
+      min-width: 0;
+      padding: 13px;
+      border: 1px solid #e1d3ec;
+      border-radius: 10px;
+      font-size: 15px;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #8e5a82;
+    }
+
+    button {
+      border: none;
+      cursor: pointer;
+      border-radius: 10px;
+      font-size: 14px;
+    }
+
+    .add-btn {
+      background: #8e5a82;
+      color: white;
+      padding: 12px 16px;
+    }
+
+    .add-btn:hover {
+      background: #70446a;
+    }
+
+    #taskList {
+      list-style: none;
+      padding: 0;
+      margin-top: 22px;
+    }
+
+    #taskList li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 13px;
+      margin-bottom: 10px;
+      background: #faf6ff;
+      border-radius: 12px;
+      overflow-wrap: anywhere;
+    }
+
+    #taskList li span {
+      flex: 1;
+    }
+
+    #taskList li.done span {
+      text-decoration: line-through;
+      color: #9c91a5;
+    }
+
+    .delete-btn {
+      background: #ffe8ee;
+      color: #c04464;
+      padding: 8px 10px;
+    }
+
+    .footer {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      color: #786782;
+      font-size: 13px;
+    }
+
+    .clear-btn {
+      padding: 9px 12px;
+      background: #eee5ff;
+      color: #70446a;
+    }
+
+    .empty {
+      text-align: center;
+      color: #a092ad;
+      padding: 20px 0;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="container">
+    <h1>✨ مهامي اليومية</h1>
+    <p class="subtitle">نظّمي يومك وحققي أهدافك</p>
+
+    <div class="input-area">
+      <input id="taskInput" type="text"
+        placeholder="اكتبي مهمة جديدة..."
+        aria-label="مهمة جديدة">
+
+      <button class="add-btn" onclick="addTask()">
+        إضافة +
+      </button>
+    </div>
+
+    <ul id="taskList"></ul>
+
+    <div class="footer">
+      <span id="remaining">المهام المتبقية: 0</span>
+      <button class="clear-btn" onclick="clearCompleted()">
+        حذف المنجَز
+      </button>
+    </div>
+  </main>
+
+  <script>
+    const input = document.getElementById("taskInput");
+    const taskList = document.getElementById("taskList");
+    const remaining = document.getElementById("remaining");
+
+    let tasks = [];
+
+    try {
+      tasks = JSON.parse(localStorage.getItem("dailyTasks")) || [];
+    } catch (error) {
+      tasks = [];
+    }
+
+    function saveTasks() {
+      localStorage.setItem("dailyTasks", JSON.stringify(tasks));
+    }
+
+    function renderTasks() {
+      taskList.innerHTML = "";
+
+      if (tasks.length === 0) {
+        const empty = document.createElement("li");
+        empty.className = "empty";
+        empty.textContent = "لسه مفيش مهام، ابدئي يومك! 💜";
+        taskList.appendChild(empty);
+      }
+
+      tasks.forEach((task, index) => {
+        const li = document.createElement("li");
+
+        if (task.done) {
+          l…
