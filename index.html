@@ -1,185 +1,200 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>مهامي اليومية</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مهامي اليومية</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<style>
+* {
+  box-sizing: border-box;
+}
 
-    body {
-      margin: 0;
-      padding: 20px;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #f8efff, #eee5ff);
-      color: #382447;
-    }
+body {
+  margin: 0;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background: #f5eaff;
+  color: #382447;
+}
 
-    .container {
-      width: 100%;
-      max-width: 500px;
-      padding: 28px 20px;
-      background: white;
-      border-radius: 22px;
-      box-shadow: 0 10px 35px #75528a20;
-    }
+.container {
+  max-width: 500px;
+  margin: 50px auto;
+  background: white;
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0 5px 20px #0001;
+}
 
-    h1 {
-      text-align: center;
-      color: #8e5a82;
-    }
+h1 {
+  text-align: center;
+  color: #8e5a82;
+}
 
-    .subtitle {
-      text-align: center;
-      color: #887b91;
-      margin-bottom: 25px;
-    }
+p {
+  text-align: center;
+  color: #887b91;
+}
 
-    .input-area {
-      display: flex;
-      gap: 8px;
-    }
+.input-area {
+  display: flex;
+  gap: 8px;
+}
 
-    #taskInput {
-      flex: 1;
-      width: 60%;
-      min-width: 0;
-      padding: 13px;
-      border: 1px solid #e1d3ec;
-      border-radius: 10px;
-      font-size: 16px;
-      outline: none;
-    }
+input[type="text"] {
+  flex: 1;
+  width: 60%;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid #d9c6e8;
+  border-radius: 8px;
+  font-size: 16px;
+}
 
-    button {
-      border: none;
-      border-radius: 10px;
-      padding: 12px;
-      font-size: 14px;
-      cursor: pointer;
-    }
+button {
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  cursor: pointer;
+  font-size: 15px;
+}
 
-    .add-btn {
-      background: #8e5a82;
-      color: white;
-      font-weight: bold;
-    }
+#addBtn {
+  background: #8e5a82;
+  color: white;
+}
 
-    #taskList {
-      list-style: none;
-      padding: 0;
-      margin-top: 22px;
-    }
+ul {
+  padding: 0;
+  list-style: none;
+}
 
-    #taskList li {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 12px;
-      margin-bottom: 10px;
-      background: #faf6ff;
-      border-radius: 12px;
-      overflow-wrap: anywhere;
-    }
+li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+  padding: 12px;
+  background: #faf6ff;
+  border-radius: 8px;
+}
 
-    #taskList li span {
-      flex: 1;
-    }
+li span {
+  flex: 1;
+  overflow-wrap: anywhere;
+}
 
-    #taskList li.done span {
-      text-decoration: line-through;
-      color: #9c91a5;
-    }
+li.done span {
+  text-decoration: line-through;
+  color: #999;
+}
 
-    .delete-btn {
-      background: #ffe8ee;
-      color: #c04464;
-    }
+.delete {
+  background: #ffe1e9;
+  color: #b52d50;
+}
 
-    .footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      margin-top: 20px;
-      color: #786782;
-      font-size: 13px;
-    }
-
-    .clear-btn {
-      background: #eee5ff;
-      color: #70446a;
-    }
-
-    .empty {
-      justify-content: center;
-      color: #a092ad;
-    }
-  </style>
+#count {
+  margin-top: 20px;
+  text-align: center;
+  color: #8e5a82;
+}
+</style>
 </head>
 
 <body>
-  <main class="container">
-    <h1>✨ مهامي اليومية</h1>
-    <p class="subtitle">نظّمي يومك وحققي أهدافك 💜</p>
+<div class="container">
+  <h1>✨ مهامي اليومية</h1>
+  <p>نظّمي يومك وحققي أهدافك 💜</p>
 
-    <form id="taskForm" class="input-area">
-      <input id="taskInput" type="text"
-        placeholder="اكتبي مهمة جديدة..."
-        autocomplete="off">
-      <button class="add-btn" type="submit">إضافة +</button>
-    </form>
+  <div class="input-area">
+    <input id="taskInput" type="text"
+      placeholder="اكتبي مهمة جديدة...">
+    <button id="addBtn" type="button">إضافة +</button>
+  </div>
 
-    <ul id="taskList"></ul>
+  <ul id="taskList"></ul>
+  <div id="count">المهام المتبقية: 0</div>
+</div>
 
-    <div class="footer">
-      <span id="remaining">المهام المتبقية: 0</span>
-      <button id="clearBtn" class="clear-btn" type="button">
-        حذف المنجَز
-      </button>
-    </div>
-  </main>
+<script>
+const taskInput = document.getElementById("taskInput");
+const addBtn = document.getElementById("addBtn");
+const taskList = document.getElementById("taskList");
+const count = document.getElementById("count");
 
-  <script>
-    const input = document.getElementById("taskInput");
-    const form = document.getElementById("taskForm");
-    const taskList = document.getElementById("taskList");
-    const remaining = document.getElementById("remaining");
-    const clearBtn = document.getElementById("clearBtn");
+let tasks = [];
 
-    let tasks = [];
+function updateCount() {
+  let remaining = tasks.filter(task => !task.done).length;
+  count.textContent = "المهام المتبقية: " + remaining;
+}
 
-    try {
-      tasks = JSON.parse(localStorage.getItem("dailyTasks")) || [];
-      if (!Array.isArray(tasks)) tasks = [];
-    } catch (error) {
-      tasks = [];
-    }
+function showTasks() {
+  taskList.innerHTML = "";
 
-    function saveTasks() {
-      try {
-        localStorage.setItem("dailyTasks", JSON.stringify(tasks));
-      } catch (error) {
-        // تظل المهام تعمل خلال فتح الصفحة الحالية
-      }
-    }
+  tasks.forEach(function(task, index) {
+    const li = document.createElement("li");
+    if (task.done) li.classList.add("done");
 
-    function renderTasks() {
-      taskList.replaceChildren();
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.checked = task.done;
 
-      if (tasks.length === 0) {
-        const empty = document.createElement("li");
-        empty.className = "empty";
-        empty.textContent = "لسه مفيش مهام، ابدئي يومك! 💜";
-        taskList.appendChild(empty);
-      }
+    checkbox.addEventListener("change", function() {
+      tasks[index].done = checkbox.checked;
+      showTasks();
+    });
 
-      tasks.forEach((task, index) => {
-        cons…
+    const span = document.createElement("span");
+    span.textContent = task.text;
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "حذف";
+    deleteBtn.className = "delete";
+
+    deleteBtn.addEventListener("click", function() {
+      tasks.splice(index, 1);
+      showTasks();
+    });
+
+    li.appendChild(checkbox);
+    li.appendChild(span);
+    li.appendChild(deleteBtn);
+    taskList.appendChild(li);
+  });
+
+  updateCount();
+}
+
+function addTask() {
+  const text = taskInput.value.trim();
+
+  if (text === "") {
+    alert("اكتبي المهمة الأول ❤️");
+    taskInput.focus();
+    return;
+  }
+
+  tasks.push({
+    text: text,
+    done: false
+  });
+
+  taskInput.value = "";
+  showTasks();
+  taskInput.focus();
+}
+
+addBtn.addEventListener("click", addTask);
+
+taskInput.addEventListener("keydown", function(event) {
+  if (event.key === "Enter") {
+    addTask();
+  }
+});
+</script>
+</body>
+</html>
+   
