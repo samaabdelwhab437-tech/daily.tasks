@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>مهامي اليومية | Daily Tasks</title>
+  <title>مهامي اليومية</title>
 
   <style>
     * {
@@ -12,21 +12,21 @@
 
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #f8efff, #eee5ff);
-      color: #382447;
+      padding: 20px;
       min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 20px;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #f8efff, #eee5ff);
+      color: #382447;
     }
 
     .container {
-      background: white;
       width: 100%;
       max-width: 500px;
-      padding: 30px 22px;
+      padding: 28px 20px;
+      background: white;
       border-radius: 22px;
       box-shadow: 0 10px 35px #75528a20;
     }
@@ -34,7 +34,6 @@
     h1 {
       text-align: center;
       color: #8e5a82;
-      margin-bottom: 8px;
     }
 
     .subtitle {
@@ -48,35 +47,29 @@
       gap: 8px;
     }
 
-    input {
+    #taskInput {
       flex: 1;
+      width: 60%;
       min-width: 0;
       padding: 13px;
       border: 1px solid #e1d3ec;
       border-radius: 10px;
-      font-size: 15px;
+      font-size: 16px;
       outline: none;
-    }
-
-    input:focus {
-      border-color: #8e5a82;
     }
 
     button {
       border: none;
-      cursor: pointer;
       border-radius: 10px;
+      padding: 12px;
       font-size: 14px;
+      cursor: pointer;
     }
 
     .add-btn {
       background: #8e5a82;
       color: white;
-      padding: 12px 16px;
-    }
-
-    .add-btn:hover {
-      background: #70446a;
+      font-weight: bold;
     }
 
     #taskList {
@@ -89,7 +82,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: 13px;
+      padding: 12px;
       margin-bottom: 10px;
       background: #faf6ff;
       border-radius: 12px;
@@ -108,29 +101,26 @@
     .delete-btn {
       background: #ffe8ee;
       color: #c04464;
-      padding: 8px 10px;
     }
 
     .footer {
-      margin-top: 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
+      margin-top: 20px;
       color: #786782;
       font-size: 13px;
     }
 
     .clear-btn {
-      padding: 9px 12px;
       background: #eee5ff;
       color: #70446a;
     }
 
     .empty {
-      text-align: center;
+      justify-content: center;
       color: #a092ad;
-      padding: 20px 0;
     }
   </style>
 </head>
@@ -138,23 +128,20 @@
 <body>
   <main class="container">
     <h1>✨ مهامي اليومية</h1>
-    <p class="subtitle">نظّمي يومك وحققي أهدافك</p>
+    <p class="subtitle">نظّمي يومك وحققي أهدافك 💜</p>
 
-    <div class="input-area">
+    <form id="taskForm" class="input-area">
       <input id="taskInput" type="text"
         placeholder="اكتبي مهمة جديدة..."
-        aria-label="مهمة جديدة">
-
-      <button class="add-btn" onclick="addTask()">
-        إضافة +
-      </button>
-    </div>
+        autocomplete="off">
+      <button class="add-btn" type="submit">إضافة +</button>
+    </form>
 
     <ul id="taskList"></ul>
 
     <div class="footer">
       <span id="remaining">المهام المتبقية: 0</span>
-      <button class="clear-btn" onclick="clearCompleted()">
+      <button id="clearBtn" class="clear-btn" type="button">
         حذف المنجَز
       </button>
     </div>
@@ -162,23 +149,30 @@
 
   <script>
     const input = document.getElementById("taskInput");
+    const form = document.getElementById("taskForm");
     const taskList = document.getElementById("taskList");
     const remaining = document.getElementById("remaining");
+    const clearBtn = document.getElementById("clearBtn");
 
     let tasks = [];
 
     try {
       tasks = JSON.parse(localStorage.getItem("dailyTasks")) || [];
+      if (!Array.isArray(tasks)) tasks = [];
     } catch (error) {
       tasks = [];
     }
 
     function saveTasks() {
-      localStorage.setItem("dailyTasks", JSON.stringify(tasks));
+      try {
+        localStorage.setItem("dailyTasks", JSON.stringify(tasks));
+      } catch (error) {
+        // تظل المهام تعمل خلال فتح الصفحة الحالية
+      }
     }
 
     function renderTasks() {
-      taskList.innerHTML = "";
+      taskList.replaceChildren();
 
       if (tasks.length === 0) {
         const empty = document.createElement("li");
@@ -188,7 +182,4 @@
       }
 
       tasks.forEach((task, index) => {
-        const li = document.createElement("li");
-
-        if (task.done) {
-          l…
+        cons…
