@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>منظم مهامي اليومية</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f7f2fa;
+  color: #352841;
+}
+
+header {
+  background: #80539a;
+  color: white;
+  text-align: center;
+  padding: 35px 15px;
+}
+
+header h1 {
+  margin: 0 0 10px;
+}
+
+.container {
+  max-width: 600px;
+  margin: 30px auto;
+  padding: 0 15px;
+}
+
+.card {
+  background: white;
+  padding: 22px;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px #e4d8eb;
+}
+
+.input-row {
+  display: flex;
+  gap: 8px;
+}
+
+input {
+  flex: 1;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid #d9c9e2;
+  border-radius: 9px;
+  font-size: 16px;
+}
+
+button {
+  border: none;
+  border-radius: 9px;
+  padding: 11px 15px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.add-btn {
+  background: #80539a;
+  color: white;
+}
+
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+li {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee5f2;
+}
+
+li span {
+  flex: 1;
+  overflow-wrap: anywhere;
+}
+
+li.done span {
+  text-decoration: line-through;
+  color: #999;
+}
+
+.delete-btn {
+  background: #fbe8ec;
+  color: #a72f4b;
+}
+
+.stats {
+  color: #80539a;
+  font-weight: bold;
+  margin-top: 18px;
+}
+
+.empty {
+  text-align: center;
+  color: #999;
+  padding: 15px 0;
+}
+
+footer {
+  text-align: center;
+  color: #777;
+  padding: 20px;
+}
+
+@media (max-width: 400px) {
+  .input-row {
+    flex-direction: column;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>منظم مهامي اليومية ✨</h1>
+  <p>خطوة صغيرة كل يوم تصنع فرقًا كبيرًا</p>
+</header>
+
+<div class="container">
+  <div class="card">
+    <h2>مهامي اليوم 📝</h2>
+
+    <div class="input-row">
+      <input
+        id="taskInput"
+        type="text"
+        placeholder="اكتبي مهمة جديدة..."
+      >
+      <button class="add-btn" onclick="addTask()">
+        إضافة +
+      </button>
+    </div>
+
+    <p class="stats" id="stats">المهام المتبقية: 0</p>
+
+    <ul id="taskList"></ul>
+
+    <p id="emptyMessage" class="empty">
+      لسه مفيش مهام، ابدئي بإضافة أول مهمة 💜
+    </p>
+  </div>
+</div>
+
+<footer>
+  صُنع بحب 💜 | منظم المهام اليومية
+</footer>
+
+<script>
+let tasks = [];
+
+try {
+  tasks = JSON.parse(
+    localStorage.getItem("dailyTasks") || "[]"
+  );
+
+  if (!Array.isArray(tasks)) tasks = [];
+} catch (error) {
+  tasks = [];
+}
+
+function saveTasks() {
+  localStorage.setItem(
+    "dailyTasks",
+    JSON.stringify(tasks)
+  );
+}
+
+function addTask() {
+  const input = document.getElementById("taskInput");
+  const text = input.value.trim();
+
+  if (text === "") {
+    alert("اكتبي المهمة الأول 💜");
+    return;
+  }
+
+  tasks.push({
+    id: Date.now() + Math.random(),
+    text: text,
+    done: false
+  });
+
+  input.value = "";
+  saveTasks();
+  renderTasks();
+  input.focus();
+}
+
+function toggleTask(id) {
+  tasks = tasks.map(task =>
+    task.id === id
+      ? { ...task, done: !task.done }
+      : task
+  );
+
+  saveTasks();
+  renderTasks();
+}
+
+function deleteTask(id) {
+  tasks = tasks.filter(task => task.id !== id);
+  saveTasks();
+  renderTasks();
+}
+
+function renderTasks() {
+  const list = document.getElementById("taskList");
+  const stats = document.getElementById("stats");
+  const empty = document.getElementById("emptyMessage");
+
+  list.replaceChildren();
+
+  tasks.forEach(task => {
+    const item = document.createElement("li");
+
+    if (task.done) item.classList.add("done");
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.checked = task.done;
+    checkbox.setAttribute(
+      "aria-label",
+      "تحديد المهمة كمكتملة"
+    );
+    checkbox.style.flex = "0 0 auto";
+    checkbox.addEventListener("change", () => {
+      toggleTask(task.id);
+    });
+
+    const label = docum…
